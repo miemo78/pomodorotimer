@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ボモドーロタイマー</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script>
+
+        //タイマーのセット
+        var time;
+        var interval_id = null;
+
+        //25分タイマーをスタートする関数
+        function click_workButton() {
+            if (interval_id === null) {
+                time = 1500;
+                interval_id = setInterval(countdown, 1000);
+            }
+        }
+
+        //5分タイマーをスタートする関数
+        function click_breakButton() {
+            console.log(interval_id)
+            if (interval_id === null) {
+                time = 300;
+                interval_id = setInterval(countdown, 1000);
+            }
+        }
+
+        //タイマーをストップする関数
+        function click_stopButton() {
+            clearInterval(interval_id);
+            interval_id = null;
+        }
+
+        //タイマーをリセットする関数
+        function click_resetButton() {
+            time = 0;
+            show_timer();
+            interval_id = null;
+        }
+
+        //1秒ずつ減らす関数
+        function countdown() {
+            time--;
+            if (time > 0) {
+                show_timer();
+
+            } else {
+                document.getElementById('timer').style.color = "red";
+                document.getElementById('timer').innerHTML = "終了!";
+                clearInterval(interval_id);
+                interval_id = null;
+            }
+        }
+
+        function show_timer() {
+            var second = time % 60;
+            var minute = (time - second) / 60;
+            document.getElementById('timer').style.color = "black";
+            document.getElementById('timer').style.fontSize = "80px";
+            document.getElementById('timer').innerHTML = ("0" + minute).slice(-2) + ":" + ("0" + second).slice(-2);
+        }
+
+            //ボタンをクリックしたとき
+            window.onload = function () {
+                var workButton = document.getElementById('workButton');
+                workButton.addEventListener('click', click_workButton, false);
+
+                var breakButton = document.getElementById('breakButton');
+                breakButton.addEventListener('click', click_breakButton, false);
+
+                var stopButtonn = document.getElementById('stopButton');
+                stopButton.addEventListener('click', click_stopButton, false);
+
+                var resetButton = document.getElementById('resetButton');
+                resetButton.addEventListener('click', click_resetButton, false);
+
+                time = 1500;
+                show_timer();
+                console.log(time)
+            }
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <p>ポモドーロタイマー</p>
+        <div class="card" style="width: 40rem; height:15rem;">            
+            <div class="card-body">
+                <div id="timer" class = "card-top d-flex align-items-center justify-content-center" style="height:10rem;">
+                    <p></p>
+                </div>
+                <div class="button d-flex justify-content-around">
+                    <button type="button" class="col-2 btn btn-info" id="workButton">25分</button>
+                    <button type="button" class="col-2 btn btn-info" id="breakButton"> 5分</button>
+                    <button type="button" class="col-2 btn btn-danger" id="stopButton">ストップ</button>
+                    <button type="button" class="col-2 btn btn-danger" id="resetButton">リセット</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
